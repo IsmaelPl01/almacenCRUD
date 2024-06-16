@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Servicio de la base de datos
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql1
+    hostname: sql1
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Passw0rd  # Cambia esto por tu contraseña
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+
+  # Servicio del backend (ASP.NET Core)
+  backend:
+    container_name: my_backend_container
+    build:
+      context: ./backend  # Asegúrate de que esta ruta sea correcta
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=db;Database=MyDatabase;User=SA;Password=YourStrong@Passw0rd;
+    depends_on:
+      - db
+    ports:
+      - "5000:80"
+
+  # Servicio del frontend (React o Angular)
+  frontend:
+    container_name: my_frontend_container
+    build:
+      context: ./frontend  # Asegúrate de que esta ruta sea correcta
+      dockerfile: Dockerfile
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  sqlserverdata:
