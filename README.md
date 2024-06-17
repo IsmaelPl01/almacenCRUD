@@ -1,6 +1,7 @@
 # Proyecto de Gestión de Usuarios y Productos
 
-Este proyecto es una aplicación web de gestión de usuarios y productos desarrollada con un frontend en React y un backend en C# utilizando ASP.NET Core. La aplicación permite a los administradores gestionar productos y usuarios, incluyendo la edición, eliminación y búsqueda de registros.
+
+Este proyecto es una aplicación web de gestión de productos desarrollada con un frontend en React y un backend en C# utilizando ASP.NET Core. La aplicación permite a los administradores gestionar productos, incluyendo la edición, eliminación y búsqueda de productos tanco como gestionar usuarios.
 
 ## Tabla de Contenidos
 
@@ -9,8 +10,6 @@ Este proyecto es una aplicación web de gestión de usuarios y productos desarro
 - [Configuración](#configuración)
 - [Ejecución](#ejecución)
 - [Estructura del Proyecto](#estructura-del-proyecto)
-- [Contribución](#contribución)
-- [Licencia](#licencia)
 
 ## Características
 
@@ -40,11 +39,13 @@ Este proyecto es una aplicación web de gestión de usuarios y productos desarro
 
 Crea un archivo `.env` en la raíz del proyecto y añade las siguientes variables de entorno:
 
-```env
+\`\`\`env
 # Base de datos
 ACCEPT_EULA=Y
 MSSQL_SA_PASSWORD=YourStrongPassword
 MSSQL_PID=Developer
+
+# Ejemplo de contraseña hash: pruebaadmin123 → AQAAAAIAAYagAAAAEHoS9P6Q45objK4OBG961dnl7VtDHBC+OWoOg6NZU4SgOObrlxSDBY75V0sqUjdmMg==
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD_HASH=hashedPassword
 ADMIN_EMAIL=admin@example.com
@@ -53,5 +54,50 @@ ADMIN_EMAIL=admin@example.com
 ASPNETCORE_ENVIRONMENT=Development
 DB_CONNECTION_STRING=Server=db;Database=almacen;User Id=sa;Password=YourStrongPassword;
 
-# Frontend
-REACT_APP_API_URL=http://localhost:5002/api
+
+## Ejecución
+
+1. **Clonar el repositorio**:
+
+   \`\`\`bash
+   git clone https://github.com/Kirisugex/almacenCRUD.git
+   cd tu-repositorio
+   \`\`\`
+
+2. **Construir y ejecutar los contenedores**:
+
+   \`\`\`bash
+   docker-compose up --build
+   \`\`\`
+
+3. **Acceder a la aplicación**:
+
+   - Frontend: `http://localhost:3000`
+   - Backend: `[http://localhost:5002/](http://localhost:5002/swagger/index.html)` [Documentación API]
+
+## Estructura del Proyecto
+
+\`\`\`
+almacenCRUD/
+├── backend/
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   ├── Program.cs
+│   ├── Startup.cs
+│   └── ...
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── services/
+│   │   └── ...
+│   ├── Dockerfile
+│   └── ...
+├── database/
+│   ├── Dockerfile
+│   └── init.sql
+├── .env
+├── docker-compose.yml
+└── README.md
+\`\`\`
