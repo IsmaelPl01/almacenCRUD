@@ -45,7 +45,7 @@ ACCEPT_EULA=Y
 MSSQL_SA_PASSWORD=YourStrongPassword
 MSSQL_PID=Developer
 
-# Ejemplo de contraseña hash: pruebaadmin123 → AQAAAAIAAYagAAAAEHoS9P6Q45objK4OBG961dnl7VtDHBC+OWoOg6NZU4SgOObrlxSDBY75V0sqUjdmMg==
+### Ejemplo de contraseña hash: pruebaadmin123 → AQAAAAIAAYagAAAAEHoS9P6Q45objK4OBG961dnl7VtDHBC+OWoOg6NZU4SgOObrlxSDBY75V0sqUjdmMg==
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD_HASH=hashedPassword
 ADMIN_EMAIL=admin@example.com
