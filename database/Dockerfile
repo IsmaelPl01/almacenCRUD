@@ -18,9 +18,6 @@ COPY init.sql /usr/src/app
 # Copiar el script de inicialización
 COPY entrypoint.sh /usr/src/app
 
-# Copiar el archivo .env al contenedor
-COPY .env /usr/src/app
-
 # Establecer el script de inicialización como ejecutable
 RUN chmod +x /usr/src/app/entrypoint.sh
 

@@ -29,10 +29,3 @@ CREATE TABLE Users (
     UpdatedAt DATETIME NULL
 );
 GO
-
--- Crear el usuario admin por defecto
-INSERT INTO Users (Username, PasswordHash, Email, Role)
-VALUES 
-('admin', 'hashed_password_for_admin', 'admin@example.com', 'admin');
-GO
-
