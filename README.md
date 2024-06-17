@@ -86,6 +86,7 @@ almacenCRUD/
 │   ├── Data/
 │   ├── Program.cs
 │   ├── Startup.cs
+│   ├── Dockerfile
 │   └── ...
 ├── frontend/
 │   ├── public/
@@ -100,6 +101,4 @@ almacenCRUD/
 │   └── init.sql
 ├── .env
 ├── docker-compose.yml
-└── README.md
-r-compose.yml
 └── README.md
