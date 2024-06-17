@@ -1,6 +1,6 @@
-import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import { TextField, Button, Box, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { TextField, Button, Box, Typography, Alert } from '@mui/material';
 import * as Yup from 'yup';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ const LoginSchema = Yup.object().shape({
 
 const Login = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState('');
 
   return (
     <Box
@@ -41,12 +42,13 @@ const Login = () => {
               })
               .catch(error => {
                 setSubmitting(false);
-                console.error('There was an error!', error);
+                setError('Failed to log in. Please check your username and password and try again.');
               });
           }}
         >
           {({ isSubmitting }) => (
             <Form>
+              {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
               <Box mb={2}>
                 <Field
                   as={TextField}
@@ -56,6 +58,7 @@ const Login = () => {
                   fullWidth
                   margin="normal"
                 />
+                <ErrorMessage name="username" component={Alert} severity="error" />
               </Box>
               <Box mb={2}>
                 <Field
@@ -67,6 +70,7 @@ const Login = () => {
                   fullWidth
                   margin="normal"
                 />
+                <ErrorMessage name="passwordHash" component={Alert} severity="error" />
               </Box>
               <Button
                 type="submit"

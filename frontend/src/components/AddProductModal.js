@@ -2,29 +2,29 @@ import React, { useState } from 'react';
 import { Modal, Box, TextField, Button, Alert } from '@mui/material';
 import api from '../services/api';
 
-const EditProductModal = ({ open, handleClose, product, refreshProducts }) => {
-  const [name, setName] = useState(product.name);
-  const [description, setDescription] = useState(product.description);
-  const [price, setPrice] = useState(product.price);
-  const [stock, setStock] = useState(product.stock);
+const AddProductModal = ({ open, handleClose, refreshProducts }) => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
+  const [stock, setStock] = useState('');
   const [error, setError] = useState('');
 
   const handleSave = () => {
-    api.put(`/products/${product.id}`, { name, description, price, stock })
+    api.post('/products', { name, description, price, stock })
       .then(response => {
         refreshProducts();
         handleClose();
       })
       .catch(error => {
-        console.error('Error updating product:', error);
-        setError('Failed to update product. Please try again.');
+        console.error('Error adding product:', error);
+        setError('Failed to add product. Please try again.');
       });
   };
 
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={{ display: 'flex', flexDirection: 'column', p: 3, bgcolor: 'background.paper', margin: 'auto', maxWidth: 400 }}>
-        <h2>Edit Product</h2>
+        <h2>Add New Product</h2>
         {error && <Alert severity="error">{error}</Alert>}
         <TextField
           value={name}
@@ -69,4 +69,4 @@ const EditProductModal = ({ open, handleClose, product, refreshProducts }) => {
   );
 };
 
-export default EditProductModal;
+export default AddProductModal;
