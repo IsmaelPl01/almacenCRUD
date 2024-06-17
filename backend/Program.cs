@@ -4,8 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using backend.Data;
 using Microsoft.OpenApi.Models;
-using backend.Models;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +36,7 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -65,6 +63,17 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthentication();
 
+// Añadir la política de CORS aquí
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -75,6 +84,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Usar CORS
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
