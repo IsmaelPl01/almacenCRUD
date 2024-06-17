@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Register from './components/Register';
+import Login from './components/Login';
+import Products from './components/Products';
+import Users from './components/Users';
+import Sidebar from './components/Sidebar';
+import PrivateRoute from './components/PrivateRoute';
+import ProductDetails from './components/ProductDetails';
+import NotFound from './components/NotFound';
+import { useLocation } from 'react-router-dom';
 
-function App() {
+const App = () => {
+  const location = useLocation();
+  const showSidebar = location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/register';
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ display: 'flex' }}>
+      {showSidebar && <Sidebar />}
+      <div style={{ flex: 1, paddingLeft: showSidebar ? '240px' : '0' }}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/products" element={<PrivateRoute><Products /></PrivateRoute>} />
+          <Route path="/products/:id" element={<PrivateRoute><ProductDetails /></PrivateRoute>} />
+          <Route path="/users" element={<PrivateRoute role="admin"><Users /></PrivateRoute>} />
+          <Route path="*" element={<NotFound />} /> {/* Ruta de comodín */}
+        </Routes>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
