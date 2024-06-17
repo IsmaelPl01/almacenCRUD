@@ -76,26 +76,30 @@ DB_CONNECTION_STRING=Server=db;Database=almacen;User Id=sa;Password=YourStrongPa
    - Backend: `http://localhost:5002/swagger/index.html` [Documentación API]
 
 ## Estructura del Proyecto
+## Estructura del Proyecto
 
+```plaintext
 almacenCRUD/
 ├── backend/
-│ ├── Controllers/
-│ ├── Models/
-│ ├── Data/
-│ ├── Program.cs
-│ ├── Startup.cs
-│ └── ...
+│   ├── Controllers/
+│   ├── Models/
+│   ├── Data/
+│   ├── Program.cs
+│   ├── Startup.cs
+│   └── ...
 ├── frontend/
-│ ├── public/
-│ ├── src/
-│ │ ├── components/
-│ │ ├── services/
-│ │ └── ...
-│ ├── Dockerfile
-│ └── ...
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── services/
+│   │   └── ...
+│   ├── Dockerfile
+│   └── ...
 ├── database/
-│ ├── Dockerfile
-│ └── init.sql
+│   ├── Dockerfile
+│   └── init.sql
 ├── .env
 ├── docker-compose.yml
+└── README.md
+r-compose.yml
 └── README.md
