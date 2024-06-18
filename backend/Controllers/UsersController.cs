@@ -92,15 +92,23 @@ public class UsersController : ControllerBase
 
     [HttpGet("all")]
     [Authorize(Roles = "admin")]
-    public async Task<ActionResult<IEnumerable<User>>> GetAllUsers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult> GetAllUsers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
     {
         try
         {
+            var totalUsers = await _context.Users.CountAsync();
             var users = await _context.Users
-                                      .Skip((pageNumber - 1) * pageSize)
-                                      .Take(pageSize)
-                                      .ToListAsync();
-            return Ok(users);
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var result = new
+            {
+                TotalCount = totalUsers,
+                Users = users
+            };
+
+            return Ok(result);
         }
         catch (Exception ex)
         {
@@ -108,6 +116,7 @@ public class UsersController : ControllerBase
             return StatusCode(500, "Internal server error");
         }
     }
+
 
     [HttpPut("{id}")]
     [Authorize(Roles = "admin")]

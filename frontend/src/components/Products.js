@@ -4,21 +4,25 @@ import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import EditProductModal from './EditProductModal';
 import DeleteProductModal from './DeleteProductModal';
-import AddProductModal from './AddProductModal'; // Importar el modal para añadir productos
+import AddProductModal from './AddProductModal';
 import SearchBar from './SearchBar';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
+  const [totalCount, setTotalCount] = useState(0); // Estado para la cantidad total de productos
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [editProduct, setEditProduct] = useState(null);
   const [deleteProductId, setDeleteProductId] = useState(null);
-  const [addProductOpen, setAddProductOpen] = useState(false); // Estado para controlar la apertura del modal de añadir productos
+  const [addProductOpen, setAddProductOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     api.get(`/products?page=${page + 1}&pageSize=${rowsPerPage}`)
-      .then(response => setProducts(response.data))
+      .then(response => {
+        setProducts(response.data.products);
+        setTotalCount(response.data.totalCount);
+      })
       .catch(error => console.error('Error fetching products:', error));
   }, [page, rowsPerPage]);
 
@@ -33,7 +37,10 @@ const Products = () => {
 
   const refreshProducts = () => {
     api.get(`/products?page=${page + 1}&pageSize=${rowsPerPage}`)
-      .then(response => setProducts(response.data))
+      .then(response => {
+        setProducts(response.data.products);
+        setTotalCount(response.data.totalCount);
+      })
       .catch(error => console.error('Error fetching products:', error));
   };
 
@@ -78,7 +85,7 @@ const Products = () => {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={products.length}
+          count={totalCount}  // Usar la cantidad total de productos para la paginación
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

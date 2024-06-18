@@ -20,21 +20,21 @@ public class ProductsController : ControllerBase
     // GET: api/Products
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<Product>>> GetProducts([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    public async Task<ActionResult> GetProducts([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        try
+        var totalProducts = await _context.Products.CountAsync();
+        var products = await _context.Products
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        var result = new
         {
-            var products = await _context.Products
-                                         .Skip((pageNumber - 1) * pageSize)
-                                         .Take(pageSize)
-                                         .ToListAsync();
-            return Ok(products);
-        }
-        catch (Exception ex)
-        {
-            // Log the exception (ex) as needed
-            return StatusCode(500, "Internal server error");
-        }
+            TotalCount = totalProducts,
+            Products = products
+        };
+
+        return Ok(result);
     }
     
     [HttpGet("search")]

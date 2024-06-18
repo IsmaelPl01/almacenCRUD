@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     build:
-      context: ./database  # Asegúrate de que esta ruta sea correcta
+      context: ./database
       dockerfile: Dockerfile
     container_name: sql1
     hostname: sql1
@@ -22,7 +22,7 @@ services:
   backend:
     container_name: my_backend_container
     build:
-      context: ./backend  # Asegúrate de que esta ruta sea correcta
+      context: ./backend
       dockerfile: Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
@@ -30,8 +30,17 @@ services:
     depends_on:
       - db
     ports:
-      - "5002:8080"  # Mapear el puerto 5002 del host al puerto 8080 del contenedor
+      - "5002:8080"
+
+  frontend:
+    container_name: my_frontend_container
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
 
 volumes:
   sqlserverdata:
-

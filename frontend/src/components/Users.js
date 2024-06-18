@@ -6,14 +6,18 @@ import DeleteUserModal from './DeleteUserModal';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
+  const [totalCount, setTotalCount] = useState(0); // Estado para la cantidad total de usuarios
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [editUser, setEditUser] = useState(null);
   const [deleteUserId, setDeleteUserId] = useState(null);
 
   useEffect(() => {
-    api.get(`/users/all?page=${page + 1}&pageSize=${rowsPerPage}`)
-      .then(response => setUsers(response.data))
+    api.get(`/users/all?pageNumber=${page + 1}&pageSize=${rowsPerPage}`)
+      .then(response => {
+        setUsers(response.data.users || []); // Asegurarse de que users es un array
+        setTotalCount(response.data.totalCount || 0);
+      })
       .catch(error => console.error('Error fetching users:', error));
   }, [page, rowsPerPage]);
 
@@ -27,8 +31,11 @@ const Users = () => {
   };
 
   const refreshUsers = () => {
-    api.get(`/users/all?page=${page + 1}&pageSize=${rowsPerPage}`)
-      .then(response => setUsers(response.data))
+    api.get(`/users/all?pageNumber=${page + 1}&pageSize=${rowsPerPage}`)
+      .then(response => {
+        setUsers(response.data.users || []);
+        setTotalCount(response.data.totalCount || 0);
+      })
       .catch(error => console.error('Error fetching users:', error));
   };
 
@@ -60,7 +67,7 @@ const Users = () => {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={users.length}
+        count={totalCount}  // Usar la cantidad total de usuarios para la paginación
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
